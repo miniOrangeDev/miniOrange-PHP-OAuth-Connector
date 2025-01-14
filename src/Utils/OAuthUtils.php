@@ -19,6 +19,9 @@ class OAuthUtils {
 
     public static function verifyState($receivedState): bool
     {
+		if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         $storedState = $_SESSION['state'] ?? null;
         return $storedState === $receivedState;
     }
