@@ -32,7 +32,7 @@ class OAuthConfig
         $this->grantType = $_ENV['GRANT_TYPE'] ?? 'authorization_code'; //default authorization_code provided
 
         // Optionally, add checks to ensure required environment variables are set
-        if (!$this->clientId || !$this->clientSecret || !$this->baseUrl || !$this->redirectUri || !$this->logoutRedirectUri || /* !$this->pemCertificatePath ||*/ !$this->scope) {
+        if (!$this->clientId || !$this->clientSecret || !$this->baseUrl || !$this->redirectUri ||/* !$this->logoutRedirectUri ||  !$this->pemCertificatePath ||*/ !$this->scope) {
             throw new Exception('Missing required environment variables for OAuthConfig');
         }
     }

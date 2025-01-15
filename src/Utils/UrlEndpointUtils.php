@@ -14,7 +14,13 @@ class UrlEndpointUtils
 
     public static function createAuthorizationUrl(string $baseUrl): string
     {
-        return $_ENV['BROKER_URI'] ?? $baseUrl . "/idp/openidsso" ;
+        $brokerUri = $_ENV['BROKER_URI'] ?? null;
+        
+        if (!empty($brokerUri)) {
+            return $brokerUri;
+        }
+        // Fallback to base URL if BROKER_URI is empty or not set
+        return $baseUrl . "/idp/openidsso";
     }
 
     public static function createRevocationUrl(string $baseUrl): string
