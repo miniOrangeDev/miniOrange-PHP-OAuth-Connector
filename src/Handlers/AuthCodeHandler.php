@@ -54,7 +54,7 @@ function handleAuthorisationCode($auth_code, $config, $loginListener)
 
             TokenHandler::HandleAccessAndRefreshToken($accessToken, $refreshToken, $config, $loginListener);
         }else
-        $loginListener->onError(Messages::ACCESS_TOKEN_NOT_FOUND->value);
+        $loginListener->onError(Messages::ACCESS_TOKEN_NOT_FOUND);
 
         //  Check for ID token in response (for OpenID scope) ....currently skipping id_token from response
         // if (!isset($response['id_token']) && Scope::OPENID->value) {

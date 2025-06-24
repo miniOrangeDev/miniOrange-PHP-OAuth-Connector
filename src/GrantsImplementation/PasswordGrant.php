@@ -26,7 +26,7 @@ class PasswordGrant extends OAuthFlow {
         
         // Validate if both email and password are provided
         if ($email == null || $password == null ) {
-            $this->loginListener->onError(Messages::EMPTY_USERNAME_PASSWORD->value);
+            $this->loginListener->onError(Messages::EMPTY_USERNAME_PASSWORD);
             exit();
         }
 
@@ -60,7 +60,7 @@ class PasswordGrant extends OAuthFlow {
         if ($user != null) {
             $this->loginListener->onLoginSuccess($user);
         }else{
-            $this->loginListener->onError(Messages::SOMETHING_WENT_WRONG->value);
+            $this->loginListener->onError(Messages::SOMETHING_WENT_WRONG);
             exit();
         }
     }

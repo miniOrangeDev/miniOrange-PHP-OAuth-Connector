@@ -14,7 +14,7 @@ function isSessionActive(OAuthConfig $config): bool
     // Check if ID token exists
     if ($idToken) {
         // Validate the ID token
-        $isValid = TokenHandler::validateToken($idToken, $config, TokenType::ID_TOKEN->value);
+        $isValid = TokenHandler::validateToken($idToken, $config, TokenType::ID_TOKEN);
 
         // Return true if the ID token is valid
         return $isValid;
@@ -25,7 +25,7 @@ function isSessionActive(OAuthConfig $config): bool
 
     if ($accessToken) {
         // Validate the access token
-        $isValid = TokenHandler::validateToken($accessToken, $config, TokenType::ACCESS_TOKEN->value);
+        $isValid = TokenHandler::validateToken($accessToken, $config, TokenType::ACCESS_TOKEN);
 
         if ($isValid) {
             // Access token is valid, return true

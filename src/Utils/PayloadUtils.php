@@ -22,16 +22,16 @@ class PayloadUtils
         $state = $_SESSION['state'] ?? OAuthUtils::generateState();
         $_SESSION['state'] = $state;
         $scope = $config->getScope();
-        $responseType = ResponseType::CODE->value;
+        $responseType = ResponseType::CODE;
 
 
-        if ($config->getGrantType() === GrantType::IMPLICIT->value) {
+        if ($config->getGrantType() === GrantType::IMPLICIT) {
             $responseType = 'token';
         }
 
         $codeChallengeParam = '';
 
-        if ($config->getGrantType() === GrantType::AUTHORIZATION_CODE_PKCE->value) {
+        if ($config->getGrantType() === GrantType::AUTHORIZATION_CODE_PKCE) {
             $codeVerifier = OAuthUtils::generateCodeVerifier();
             $_SESSION['code_verifier'] = $codeVerifier;
             $codeChallenge = OAuthUtils::generateCodeChallenge($codeVerifier);
@@ -47,7 +47,7 @@ class PayloadUtils
         
         $params = [
             // 'grant_type' => $grantType,
-            'grant_type' => GrantType::AUTHORIZATION_CODE->value,
+            'grant_type' => GrantType::AUTHORIZATION_CODE,
             'client_id' => $config->getClientId(),
             'client_secret' => $config->getClientSecret(),
             'redirect_uri' => $config->getRedirectUri(),
@@ -56,14 +56,14 @@ class PayloadUtils
         ];
 
         // Handle PKCE flow if the grant type is AUTHORIZATION_CODE_PKCE
-        if ($config->getGrantType() === GrantType::AUTHORIZATION_CODE_PKCE->value) {
+        if ($config->getGrantType() === GrantType::AUTHORIZATION_CODE_PKCE) {
             // session_start();
             $codeVerifier = $_SESSION['code_verifier'] ?? null;
 
             if ($codeVerifier !== null) {
                 $params['code_verifier'] = $codeVerifier;
             } else {
-                $loginListener->onError(Messages::CODE_VERIFIER_NOT_FOUND->value);
+                $loginListener->onError(Messages::CODE_VERIFIER_NOT_FOUND);
                 exit();
             }
         }

@@ -1,7 +1,7 @@
 <?php
 namespace Miniorange\Phpoauth\Constants;
 
-enum ResponseType: string {
-    case CODE = 'code';
-    case TOKEN = 'token';
+class ResponseType {
+    public const CODE = 'code';
+    public const TOKEN = 'token';
 }
