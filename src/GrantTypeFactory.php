@@ -4,7 +4,7 @@ namespace Miniorange\Phpoauth;
 use Miniorange\Phpoauth\Constants\GrantType;
 use Miniorange\Phpoauth\GrantsImplementation\AuthorizationCodeGrant;
 use Miniorange\Phpoauth\GrantsImplementation\ImplicitGrant;
-use Miniorange\Phpoauth\GrantsImplementation\PasswordGrant;
+// use Miniorange\Phpoauth\GrantsImplementation\PasswordGrant;
 use Miniorange\Phpoauth\GrantsImplementation\PKCEGrant;
 use Miniorange\Phpoauth\GrantsImplementation\OAuthFlow;
 

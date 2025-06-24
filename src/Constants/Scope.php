@@ -1,8 +1,8 @@
 <?php
 namespace Miniorange\Phpoauth\Constants;
 
-enum Scope: string {
-    case EMAIL = 'email';
-    case OPENID = 'openid';
-    case PROFILE = 'profile';
+class Scope {
+    public const EMAIL = 'email';
+    public const OPENID = 'openid';
+    public const PROFILE = 'profile';
 }

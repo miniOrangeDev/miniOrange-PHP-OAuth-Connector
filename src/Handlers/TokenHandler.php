@@ -9,7 +9,7 @@ use Miniorange\Phpoauth\Constants\Scope;
 use \Exception;
 use Miniorange\Phpoauth\Constants\GrantType;
 use Miniorange\Phpoauth\Constants\Messages;
-use function Miniorange\Phpoauth\Utils\decodeToken;
+// use function Miniorange\Phpoauth\Utils\decodeToken;
 
 /**
  * Class TokenHandler
@@ -25,7 +25,7 @@ class TokenHandler
         try {
             // Prepare the POST data for the token request
             $postData = [
-                'grant_type' => GrantType::PASSWORD->value,
+                'grant_type' => GrantType::PASSWORD,
                 'username' => $username,
                 'password' => $password,
                 'client_id' => $config->getClientId(),
@@ -40,10 +40,10 @@ class TokenHandler
             $tokenResponse = makeApiCall(UrlEndpointUtils::createTokenUrl($config->getBaseUrl()), $headers, $postData);
             session_start();
             // Check if the scope is 'openid' (this is specific to OpenID Connect)
-            if ($config->getScope() == Scope::OPENID->value) {   
+            if ($config->getScope() == Scope::OPENID) {   
                 // If the scope is openid, we expect an id_token in the response
                 if (!isset($tokenResponse['id_token'])) {
-                    throw new Exception(Messages::ID_TOKEN_NOT_FOUND->value);
+                    throw new Exception(Messages::ID_TOKEN_NOT_FOUND);
                 }
 
                 $_SESSION['id_token'] = $tokenResponse['id_token']; //store id_token
@@ -53,7 +53,7 @@ class TokenHandler
             // For non-openid scopes, we expect an access_token
             if (!isset($tokenResponse['access_token'])) {
                 // If no access_token is found, throw an exception
-                throw new Exception(Messages::ACCESS_TOKEN_NOT_FOUND->value);
+                throw new Exception(Messages::ACCESS_TOKEN_NOT_FOUND);
             }
             $_SESSION['access_token'] = $tokenResponse["access_token"]; //store access token
             $_SESSION['refresh_token'] = $tokenResponse["refresh_token"]; //store refresh token
@@ -62,7 +62,7 @@ class TokenHandler
             return $tokenResponse['access_token'];
         } catch (Exception $e) {
             //parse message from response like incorrect username or password..
-            $loginListener->onError(isset($tokenResponse['message']) ? $tokenResponse['message'] : Messages::SOMETHING_WENT_WRONG->value);
+            $loginListener->onError(isset($tokenResponse['message']) ? $tokenResponse['message'] : Messages::SOMETHING_WENT_WRONG);
             exit();
             
         }
@@ -115,7 +115,7 @@ class TokenHandler
 
         // Prepare POST data
         $postData = [
-            'grant_type' => GrantType::REFRESH_TOKEN->value,
+            'grant_type' => GrantType::REFRESH_TOKEN,
             'refresh_token' => $refreshToken,
         ];
 
@@ -146,20 +146,20 @@ class TokenHandler
             
             exit;
         } else {
-            $loginListener->onError(Messages::SOMETHING_WENT_WRONG->value);
+            $loginListener->onError(Messages::SOMETHING_WENT_WRONG);
         }
     }
 
-    public static function HandleIdToken($id_token, $config, $loginListener){
-        $pem = $config->getPemCertificatePath();
-        $user = decodeToken($pem, $id_token, $loginListener);
-        if ($user != null){
-            $loginListener->onLoginSuccess($user);
-            $_SESSION['id_token'] = $id_token; //store id token
+    // public static function HandleIdToken($id_token, $config, $loginListener){
+    //     $pem = $config->getPemCertificatePath();
+    //     $user = decodeToken($pem, $id_token, $loginListener);
+    //     if ($user != null){
+    //         $loginListener->onLoginSuccess($user);
+    //         $_SESSION['id_token'] = $id_token; //store id token
 
-        }else{
-            $loginListener->onError(Messages::SOMETHING_WENT_WRONG->value);
-        }
-        exit();
-    }
+    //     }else{
+    //         $loginListener->onError(Messages::SOMETHING_WENT_WRONG);
+    //     }
+    //     exit();
+    // }
 }

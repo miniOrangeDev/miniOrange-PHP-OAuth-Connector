@@ -2,7 +2,6 @@
 namespace Miniorange\Phpoauth\Handlers;
 
 use Miniorange\Phpoauth\GrantTypeFactory;
-use Miniorange\Phpoauth\Constants\GrantType;
 
 /* =========================================================== */
 /*                 Authorization Handler Class                 */
@@ -18,9 +17,11 @@ use Miniorange\Phpoauth\Constants\GrantType;
 class AuthorizationHandler {
 
     private $config; 
+    private $loginListener;
 
-    public function __construct($config) {
+    public function __construct($config, $loginListener) {
         $this->config = $config;
+        $this->loginListener = $loginListener;
     }
 
     /* 
@@ -30,15 +31,13 @@ class AuthorizationHandler {
      */
     public function startAuthorization($email = null, $password = null) {
 
-        // Get the grant type from the configuration
-        $grantTypeValue = $this->config->getGrantType();
-            
-        try {
-            // Convert grant type string to enum
-            $grantType = GrantType::from($grantTypeValue);
-        } catch (\ValueError $e) {
-            // Throw an error if grant type is invalid
-            throw new \Exception('Invalid grant type provided: ' . $grantTypeValue);
+        // Check if session and access token exist
+        if(isSessionActive($this->config))
+        {
+            $accessToken = $_SESSION['access_token'] ?? null;
+            $refreshToken = $_SESSION['refresh_token'] ?? null;
+            TokenHandler::HandleAccessAndRefreshToken($accessToken, $refreshToken, $this->config, $this->loginListener);
+            exit();
         }
         
         // Get the correct grant flow based on the grant type

@@ -47,7 +47,7 @@ class CallbackHandler
         // ============================================================
 
         if (!OAuthUtils::verifyState($queryParams['state'])) {
-            $this->loginListener->onError(Messages::INVALID_STATE->value);
+            $this->loginListener->onError(Messages::INVALID_STATE);
             exit();
         }
 
@@ -78,7 +78,7 @@ class CallbackHandler
         }
 
         if(!isset($queryParams["access_token"]) && !isset($queryParams['code']))
-            $this->loginListener->onError(Messages::ACCESS_TOKEN_NOT_FOUND->value);
+            $this->loginListener->onError(Messages::ACCESS_TOKEN_NOT_FOUND);
 
     }
 }
